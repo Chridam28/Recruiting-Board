@@ -58,19 +58,17 @@ def _safe_str(x):
 
 
 @st.cache_data(ttl=300)
-def load_data(csv_url: str) -> pd.DataFrame:
-    df = pd.read_csv(csv_url)
-def normalize_url(u: str) -> str:
-    u = _safe_str(u)
-    if not u:
-        return ""
-    if u.startswith("www."):
-        return "https://" + u
-    return u
+def load_data(csv_url):
+    resp = requests.get(csv_url)
+    df = pd.read_csv(io.BytesIO(resp.content))
 
-df["highlight_video_url"] = df["highlight_video_url"].apply(normalize_url)
-df["photo_url"] = df["photo_url"].apply(normalize_url)
-df["photo"] = df["photo"].apply(normalize_url)
+    df.columns = [c.strip() for c in df.columns]
+
+    df["highlight_video_url"] = df["highlight_video_url"].apply(normalize_url)
+    df["photo_url"] = df["photo_url"].apply(normalize_url)
+    df["photo"] = df["photo"].apply(normalize_url)
+
+    return df
     # Normalizza nomi colonne (evita spazi)
     df.columns = [c.strip() for c in df.columns]
 
