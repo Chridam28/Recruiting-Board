@@ -178,9 +178,9 @@ with st.sidebar:
     view = st.radio("Section", ["Home", "Available Prospects", "Placed Athletes"], index=0)
     
     if st.session_state.get("selected_id"):
-    if st.button("← Back to results", key="back_sidebar"):
-        st.session_state.selected_id = None
-        st.rerun()
+        if st.button("← Back to results", key="back_sidebar"):
+            st.session_state.selected_id = None
+            st.rerun()
     
     sport_filter = st.multiselect("Sport", SPORTS, default=[])
     # Calcola range reale dai dati
@@ -241,8 +241,8 @@ def render_grid(d: pd.DataFrame, cols: int = 4):
 
 def render_profile(df_all: pd.DataFrame, athlete_id: str):
     if st.button("← Back", key="back_top"):
-    st.session_state.selected_id = None
-    st.rerun()
+        st.session_state.selected_id = None
+        st.rerun()
     row = df_all[df_all["athlete_id"] == athlete_id]
     if row.empty:
         st.error("Athlete not found.")
