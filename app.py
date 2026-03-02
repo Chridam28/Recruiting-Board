@@ -170,9 +170,15 @@ with st.sidebar:
     view = st.radio("Section", ["Home", "Available Prospects", "Placed Athletes"], index=0)
 
     sport_filter = st.multiselect("Sport", SPORTS, default=[])
+    # Calcola range reale dai dati
+    gy_min_data = int(df["grad_year"].dropna().min()) if df["grad_year"].notna().any() else 2024
+    gy_max_data = int(df["grad_year"].dropna().max()) if df["grad_year"].notna().any() else 2032
+
     grad_year_min, grad_year_max = st.slider(
         "Grad Year range",
-        min_value=2024, max_value=2032, value=(2026, 2028)
+        min_value=gy_min_data,
+        max_value=gy_max_data,
+        value=(gy_min_data, gy_max_data),
     )
     gpa_min = st.slider("Min GPA", min_value=0.0, max_value=4.0, value=0.0, step=0.1)
     search = st.text_input("Search name", "")
