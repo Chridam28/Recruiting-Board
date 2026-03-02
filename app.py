@@ -60,7 +60,7 @@ def _safe_str(x):
 @st.cache_data(ttl=300)
 def load_data(csv_url: str) -> pd.DataFrame:
     df = pd.read_csv(csv_url)
-    def normalize_url(u: str) -> str:
+def normalize_url(u: str) -> str:
     u = _safe_str(u)
     if not u:
         return ""
