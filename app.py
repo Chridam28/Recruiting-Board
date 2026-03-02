@@ -7,7 +7,7 @@ import streamlit as st
 # =========================
 st.set_page_config(page_title="Recruiting Board", layout="wide")
 
-SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYiTwd8DBw8G1UpSDMuGt0BRaan84cR5CdDDG06v0ljMgPQCK5oS_s8z9QlXFmQ4apM7jL9PhqSm4e/pub?gid=0&single=true&output=csv"  # <-- IMPORTANTISSIMO
+SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1Lq_UPY26ciG40FciDTae3nkzZbFDX_fNYcQ-PEXimZc/gviz/tq?tqx=out:csv&gid=0"  # <-- IMPORTANTISSIMO
 
 # Colonne minime attese (aggiungine se vuoi)
 REQUIRED_COLS = [
