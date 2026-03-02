@@ -60,7 +60,17 @@ def _safe_str(x):
 @st.cache_data(ttl=300)
 def load_data(csv_url: str) -> pd.DataFrame:
     df = pd.read_csv(csv_url)
+    def normalize_url(u: str) -> str:
+    u = _safe_str(u)
+    if not u:
+        return ""
+    if u.startswith("www."):
+        return "https://" + u
+    return u
 
+df["highlight_video_url"] = df["highlight_video_url"].apply(normalize_url)
+df["photo_url"] = df["photo_url"].apply(normalize_url)
+df["photo"] = df["photo"].apply(normalize_url)
     # Normalizza nomi colonne (evita spazi)
     df.columns = [c.strip() for c in df.columns]
 
@@ -168,7 +178,12 @@ except Exception as e:
 with st.sidebar:
     st.header("Filters")
     view = st.radio("Section", ["Home", "Available Prospects", "Placed Athletes"], index=0)
-
+    
+    if st.session_state.get("selected_id"):
+    if st.button("← Back to results", key="back_sidebar"):
+        st.session_state.selected_id = None
+        st.rerun()
+    
     sport_filter = st.multiselect("Sport", SPORTS, default=[])
     # Calcola range reale dai dati
     gy_min_data = int(df["grad_year"].dropna().min()) if df["grad_year"].notna().any() else 2024
@@ -227,6 +242,9 @@ def render_grid(d: pd.DataFrame, cols: int = 4):
 
 
 def render_profile(df_all: pd.DataFrame, athlete_id: str):
+    if st.button("← Back", key="back_top"):
+    st.session_state.selected_id = None
+    st.rerun()
     row = df_all[df_all["athlete_id"] == athlete_id]
     if row.empty:
         st.error("Athlete not found.")
